@@ -950,6 +950,34 @@ final class BrowserInteractionModelTests: XCTestCase {
         XCTAssertEqual(chrome.startPageFocusRequest, focusedRequest)
     }
 
+    func testNewTabTogglesCommandPaletteWhenAlreadyPresented() {
+        let chrome = BrowserChromeState()
+
+        chrome.openNewTab(isStartPageSelected: false)
+        XCTAssertEqual(chrome.commandPaletteMode, .newTab)
+        XCTAssertTrue(chrome.isCommandPalettePresented)
+
+        chrome.openNewTab(isStartPageSelected: false)
+        XCTAssertNil(chrome.commandPaletteMode)
+        XCTAssertFalse(chrome.isCommandPalettePresented)
+
+        chrome.openNewTab(isStartPageSelected: false)
+        XCTAssertEqual(chrome.commandPaletteMode, .newTab)
+        XCTAssertTrue(chrome.isCommandPalettePresented)
+    }
+
+    func testNewTabDismissesCommandPalettePresentedForLocationEditing() {
+        let chrome = BrowserChromeState()
+
+        chrome.openLocation("https://example.com")
+        XCTAssertEqual(chrome.commandPaletteMode, .editLocation("https://example.com"))
+        XCTAssertTrue(chrome.isCommandPalettePresented)
+
+        chrome.openNewTab(isStartPageSelected: false)
+        XCTAssertNil(chrome.commandPaletteMode)
+        XCTAssertFalse(chrome.isCommandPalettePresented)
+    }
+
     func testRootNewTabActionKeepsTheSelectedStartPageCohesive() throws {
         let browser = BrowserStore.hostingPages()
         let pages = BrowserPagePool(browser: browser)
