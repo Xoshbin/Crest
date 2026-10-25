@@ -4544,7 +4544,7 @@
     },
     "toggle-command-bar-shortcut": {
       "category": "improved",
-      "message": "Pressing Command-T while the command bar is open now closes it, toggling the bar on and off as in Arc."
+      "message": "Pressing Command-T while the command bar is open closes it."
     }
   }
 }
